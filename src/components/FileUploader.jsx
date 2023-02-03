@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const FileUploader = () => {
+
+    const [file,setFile]=useState()
+
     function launchSaveToOneDrive() {
         var odOptions = {
-          clientId: "9c0d6026-4d2d-496a-b58a-c0de8ab3425a",
+          clientId: "042c64fe-f5f6-4694-8584-82a0a2c14f26",
           action: "save",
           sourceInputElementId: "fileUploadControl",
           sourceUri: "",
-          fileName: "file.txt",
+          fileName: {file},
           openInNewWindow: true,
-          advanced: {},
+          advanced: {
+            
+          },
           success: function (files) {
             /* success handler */
             console.log("SUCCESS: ", files);
@@ -25,11 +30,16 @@ const FileUploader = () => {
         };
         OneDrive.save(odOptions);
       }
+
+      function handleChange(e){
+        setFile(e.target.value.split("\\")[2])
+      }
+
   return (
     <div>
         <h2>File Uploader</h2>
-        <input id="fileUploadControl" name="fileUploadControl" type="file" />
-        <button onClick={()=>launchSaveToOneDrive()}>Save to OneDrive</button>
+        <input onInput={handleChange} id="fileUploadControl" name="fileUploadControl" type="file" />
+        <button onClick={launchSaveToOneDrive}>Save to OneDrive</button>
     </div>
   )
 }
